@@ -27,7 +27,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // `;
 
 // setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
-const clock = new THREE.Clock();
+// const clock = new THREE.Clock();
 const container = document.getElementById('container');
 
 const stats = new Stats();
@@ -49,10 +49,10 @@ scene.environment = pmremGenerator.fromScene(
 ).texture;
 
 const camera = new THREE.PerspectiveCamera(
-  40,
+  45,
   window.innerWidth / window.innerHeight,
   1,
-  100
+  100000
 );
 camera.position.set(5, 2, 8);
 
@@ -67,17 +67,14 @@ dracoLoader.setDecoderPath('js/libs/draco/gltf/');
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
-let mixer
+let mixer;
 loader.load(
-  'models/gltf/LittlestTokyo.glb',
+  './src/island/scene.gltf',
   function (gltf) {
     const model = gltf.scene;
-    model.position.set(1, 1, 0);
-    model.scale.set(0.01, 0.01, 0.01);
+    // model.position.set(1, 1, 0);
+    // model.scale.set(0.01, 0.01, 0.01);
     scene.add(model);
-
-    mixer = new THREE.AnimationMixer(model);
-    mixer.clipAction(gltf.animations[0]).play();
 
     animate();
   },
@@ -96,10 +93,6 @@ window.onresize = function () {
 
 function animate() {
   requestAnimationFrame(animate);
-
-  const delta = clock.getDelta();
-
-  mixer.update(delta);
 
   controls.update();
 
